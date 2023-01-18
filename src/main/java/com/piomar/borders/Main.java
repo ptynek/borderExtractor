@@ -40,7 +40,7 @@ public class Main {
             if (!processor.validateFile(list)) {
                 processor.fixListIfValidateFail(list);
             } else {
-                System.out.println("Wszystkie dane są poprawne.");
+                System.out.println("Wszystkie dane są poprawne. \n");
                 break;
             }
         }

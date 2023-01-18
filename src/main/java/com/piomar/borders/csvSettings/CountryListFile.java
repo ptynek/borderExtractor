@@ -1,7 +1,6 @@
 package com.piomar.borders.csvSettings;
 
 import com.opencsv.bean.CsvBindByPosition;
-import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

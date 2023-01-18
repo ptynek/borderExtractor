@@ -1,10 +1,15 @@
 package com.piomar.borders.Service;
 
+import com.opencsv.CSVParserWriter;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.piomar.borders.csvSettings.ReadyCsvFile;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,20 +20,19 @@ public class FinalFileCreator {
 
     public void saveToFile(Map<String, List<ReadyCsvFile>> resultMap) throws IOException {
 
-        createFile();
-
+        FileWriter myWriter = new FileWriter(file);
+        createFile(myWriter);
         ReadyCsvFile previous = new ReadyCsvFile();
 
         for (Map.Entry<String, List<ReadyCsvFile>> entry :resultMap.entrySet()) {
 
             Iterator<ReadyCsvFile> iterator = entry.getValue().iterator();
-            System.out.println("ID: " + entry.getKey());
             while (iterator.hasNext()) {
                 ReadyCsvFile record = iterator.next();
                 if(previous.getCountry() != null) {
                     previous.setExitDate(record.getEntryDate());
                     previous.setExitTime(record.getEntryTime());
-                    System.out.println("    " + previous);
+                    writeFile(myWriter, entry.getKey(), previous);
                 }
                 previous = record;
 
@@ -36,19 +40,24 @@ public class FinalFileCreator {
             }
             previous = new ReadyCsvFile();
         }
+        myWriter.close();
     }
 
-    private void writeFile(final String id, final ReadyCsvFile record){
+    private void writeFile(FileWriter myWriter, String driverId, ReadyCsvFile record) throws IOException {
+        myWriter.write(
+                driverId + ";" +
+                    record.getCountry() + ";" +
+                        record.getEntryDate() + ";" +
+                        record.getEntryTime() + ";" +
+                        record.getExitDate() + ";" +
+                        record.getExitTime() + ";" +
+                        record.getDelegation() + "\n"
 
+        );
     }
 
-    private File createFile() throws IOException {
-
-        FileWriter myWriter = new FileWriter(file);
+    private void createFile(FileWriter myWriter) throws IOException {
         myWriter.write("Numer służbowy;Państwo odcinka zagranicznego;" +
                 "Data wjazdu ;Godzina wjazdu;Data wyjazdu;Godzina wyjazdu;Uwzględnij jako delegowanie" + "\n");
-        myWriter.close();
-
-        return file;
     }
 }

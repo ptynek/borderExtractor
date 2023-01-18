@@ -66,7 +66,7 @@ public class Processor {
                                         findFullNameCountry(countryList, record.getCountry()),
                                         getDay(record.getTime()),
                                         getTime(record.getTime()),
-                                        null,
+                                        "",
                                         "",
                                         1
                                 ));
